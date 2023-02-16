@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
@@ -33,28 +34,6 @@ func (f DFavorite) TableName() string {
 	return "dfavrite"
 }
 
-//func main()  {
-//
-//	dsn := "root:123456@tcp(127.0.0.1:3306)/douyin?charset=utf8mb4&parseTime=True&loc=Local"
-//	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-//	if err != nil {
-//		log.Fatal("failed to connect database: %w", err)
-//	}
-//	//db.Migrator().CreateTable(&DComment{})
-//
-//	//var videos []DVideo
-//	//db.Limit(30).Find(&videos)
-//
-//	//user := User{Id: 4, Name: "zhangsan", FollowCount: 1, FollowerCount: 1, IsFollow: true}
-//	//db.Create(&DUser{5, "laowu", 6, 6, true})
-//
-//	//userIsExist("laoliu")
-//
-//	//ss := GetFeed()
-//	//println(ss[1].PlayUrl)
-//
-//}
-
 var (
 	db   *gorm.DB
 	once = &sync.Once{}
@@ -75,6 +54,33 @@ func getDB() *gorm.DB {
 func GetFeed(latest_time int64) (dvideos []DVideo) {
 	db := getDB()
 	db.Where("time > ?", latest_time).Order("favorite_count desc").Limit(30).Find(&dvideos)
+	return
+}
+
+func GetFeedByToken(latest_time int64, token string) (dvideos []DVideo) {
+	db := getDB()
+	drecom, flag := DrecomFindByToken(token)
+	if flag == false {
+		log.Fatal("can not find user drecommend")
+	}
+	sum := drecom.Type1 + drecom.Type2 +drecom.Type3
+	s1 := int(float32(drecom.Type1)/float32(sum)*30)
+	s2 := int(float32(drecom.Type2)/float32(sum)*30)
+	s3 := int(float32(drecom.Type3)/float32(sum)*30)
+	fmt.Println("s1,s2,s3分别为", s1, s2, s3)
+	dvideos = make([]DVideo,30)
+	db.Where("time > ? AND title = ?", latest_time, "dy1").Order("favorite_count desc").Limit(s1).Find(&dvideos)
+	println("type1的长度为: ", len(dvideos))
+	zj := make([]DVideo, 30)
+	db.Where("time > ? AND title = ?", latest_time, "dy2").Order("favorite_count desc").Limit(s2).Find(&zj)
+	dvideos = append(dvideos, zj...)
+	println("type1和2的长度为: ", len(dvideos))
+	db.Where("time > ? AND title = ?", latest_time, "dy3").Order("favorite_count desc").Limit(s3).Find(&zj)
+	dvideos = append(dvideos, zj...)
+	println("type1和2和3的长度为: ", len(dvideos))
+	db.Where("time > ? AND title = ?", latest_time, "dy4").Order("favorite_count desc").Limit(30-len(dvideos)).Find(&zj)
+	dvideos = append(dvideos, zj...)
+	println("type1和2和3和其他的长度为: ", len(dvideos))
 	return
 }
 

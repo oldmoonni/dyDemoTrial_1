@@ -25,8 +25,14 @@ func Feed(ctx context.Context, c *app.RequestContext) {
 	println("latest_time = ", latest_time)
 	println("当前时间戳: ", time.Now().Unix())
 
-	//对DemoVideos进行操作
-	dd := dao.GetFeed(latest_time-200000)
+	var dd []dao.DVideo
+	if token == "" {
+		dd = dao.GetFeed(latest_time-500000)
+		println("token 为空")
+	} else {
+		dd = dao.GetFeedByToken(latest_time-500000, token)
+		println("token 存在")
+	}
 	DemoVideos2 := feedv2v(dd, token)
 
 	c.JSON(consts.StatusOK, FeedResponse{

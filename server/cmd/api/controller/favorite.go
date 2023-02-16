@@ -43,6 +43,14 @@ func FavoriteAction(ctx context.Context, c *app.RequestContext) {
 		user_id := duserlock.Id
 		timeUnix := time.Now().Unix()
 		dao.VideoAddFav(id, user_id, video_id, timeUnix)
+		video := dao.GetVideosByVideoId(video_id)
+		switch video.Title {
+		case "dy1": dao.DrecomAdd(token, 1)
+		case "dy2": dao.DrecomAdd(token, 2)
+		case "dy3": dao.DrecomAdd(token, 3)
+		}
+		//有问题，重新写
+		//dao.FavAddRedis(user_id, video.Title)
 	} else {
 		if dao.VideoIsFavByToken(token, video_id) == false {
 			c.JSON(consts.StatusOK, Response{StatusCode: 1, StatusMsg: "you have not done favoriteAction on this video"})
@@ -50,6 +58,12 @@ func FavoriteAction(ctx context.Context, c *app.RequestContext) {
 		}
 		user_id := duserlock.Id
 		dao.VideoSubFav(user_id, video_id)
+		video := dao.GetVideosByVideoId(video_id)
+		switch video.Title {
+		case "dy1": dao.DrecomSub(token, 1)
+		case "dy2": dao.DrecomSub(token, 2)
+		case "dy3": dao.DrecomSub(token, 3)
+		}
 	}
 	c.JSON(consts.StatusOK, Response{StatusCode: 0})
 }

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/trial_1/dyDemo/server/cmd/api/dao"
+	"github.com/trial_1/dyDemoTrial_1/server/cmd/api/dao"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
@@ -21,6 +21,10 @@ func main() {
 	db.Migrator().CreateTable(&dao.DUserLock{})
 	db.Migrator().CreateTable(&dao.DVideo{})
 	db.Migrator().CreateTable(&dao.DMessage{})
+	db.Migrator().CreateTable(&dao.DRecommend{})
+
+	//db.Create(&dao.DRecommend{Token: "zhangsan123456", Type1: 10, Type2: 10, Type3: 10})
+	//db.Create(&dao.DRecommend{Token: "lisi123456", Type1: 10, Type2: 10, Type3: 10})
 
 	//var videos []DVideo
 	//db.Limit(30).Find(&videos)

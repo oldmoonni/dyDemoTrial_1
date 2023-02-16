@@ -7,6 +7,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/trial_1/dyDemoTrial_1/server/cmd/api/controller"
+	"github.com/trial_1/dyDemoTrial_1/server/cmd/api/handlers"
 )
 
 // customizeRegister registers customize routers.
@@ -21,18 +22,21 @@ func customizedRegister(r *server.Hertz) {
 			controller.Feed(ctx, c)
 			println("/feed:get")
 		})
-		apiRouter.GET("/user/", func(ctx context.Context, c *app.RequestContext) {
-			controller.UserInfo(ctx, c)
-			println("/user:get")
-		})
-		apiRouter.POST("/user/register/", func(ctx context.Context, c *app.RequestContext) {
-			controller.Register(ctx, c)
-			println("/user/register:post")
-		})
-		apiRouter.POST("/user/login/", func(ctx context.Context, c *app.RequestContext) {
-			controller.Login(ctx, c)
-			println("/user/login:post")
-		})
+		apiRouter.GET("/user/", handlers.UserInfo)
+		apiRouter.POST("/user/register/", handlers.UserRegister)
+		apiRouter.POST("/user/login/", handlers.UserLogin)
+		//apiRouter.GET("/user/", func(ctx context.Context, c *app.RequestContext) {
+		//	controller.UserInfo(ctx, c)
+		//	println("/user:get")
+		//})
+		//apiRouter.POST("/user/register/", func(ctx context.Context, c *app.RequestContext) {
+		//	controller.Register(ctx, c)
+		//	println("/user/register:post")
+		//})
+		//apiRouter.POST("/user/login/", func(ctx context.Context, c *app.RequestContext) {
+		//	controller.Login(ctx, c)
+		//	println("/user/login:post")
+		//})
 		apiRouter.POST("/publish/action/", func(ctx context.Context, c *app.RequestContext) {
 			println("开始运行")
 			controller.Publish(ctx, c)

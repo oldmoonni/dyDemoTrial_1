@@ -4,10 +4,13 @@ package main
 
 import (
 	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/trial_1/dyDemoTrial_1/server/cmd/api/rpc"
 )
 
 func main() {
-	h := server.Default(server.WithMaxRequestBodySize(20 << 20))
+	rpc.InitRPC()
+	h := server.Default(server.WithMaxRequestBodySize(20 << 20),
+		server.WithHostPorts("0.0.0.0:8080"))
 
 	register(h)
 	h.Spin()

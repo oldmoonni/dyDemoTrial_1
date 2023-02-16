@@ -58,6 +58,7 @@ func Register(ctx context.Context, c *app.RequestContext) {
 		//应该是原子的
 		dao.UserInsert(id, username)
 		dao.UserLockInsert(id, username, password)
+		dao.DrecomInsert(token)
 
 		c.JSON(consts.StatusOK, UserLoginResponse{
 			Response: Response{StatusCode: 0},
