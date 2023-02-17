@@ -18,13 +18,15 @@ func customizedRegister(r *server.Hertz) {
 	apiRouter := r.Group("/douyin")
 	{
 		//基础接口
-		apiRouter.GET("/feed/", func(ctx context.Context, c *app.RequestContext) {
-			controller.Feed(ctx, c)
-			println("/feed:get")
-		})
+		//apiRouter.GET("/feed/", func(ctx context.Context, c *app.RequestContext) {
+		//	controller.Feed(ctx, c)
+		//	println("/feed:get")
+		//})
+		apiRouter.GET("/feed/", handlers.VideoFeed)
 		apiRouter.GET("/user/", handlers.UserInfo)
 		apiRouter.POST("/user/register/", handlers.UserRegister)
 		apiRouter.POST("/user/login/", handlers.UserLogin)
+		apiRouter.GET("/publish/list/", handlers.VideoPublishList)
 		//apiRouter.GET("/user/", func(ctx context.Context, c *app.RequestContext) {
 		//	controller.UserInfo(ctx, c)
 		//	println("/user:get")
@@ -42,42 +44,49 @@ func customizedRegister(r *server.Hertz) {
 			controller.Publish(ctx, c)
 			println("/publish/action:post")
 		})
-		apiRouter.GET("/publish/list/", func(ctx context.Context, c *app.RequestContext) {
-			controller.PublishList(ctx, c)
-			println("/publish/list:get")
-		})
+		//apiRouter.GET("/publish/list/", func(ctx context.Context, c *app.RequestContext) {
+		//	controller.PublishList(ctx, c)
+		//	println("/publish/list:get")
+		//})
 
 		//互动接口
-		apiRouter.POST("/favorite/action/", func(ctx context.Context, c *app.RequestContext) {
-			controller.FavoriteAction(ctx, c)
-			println("/favorite/action:post")
-		})
-		apiRouter.GET("/favorite/list/", func(ctx context.Context, c *app.RequestContext) {
-			controller.FavoriteList(ctx, c)
-			println("/favorite/list:get")
-		})
-		apiRouter.POST("/comment/action/", func(ctx context.Context, c *app.RequestContext) {
-			controller.CommentAction(ctx, c)
-			println("/comment/action:post")
-		})
-		apiRouter.GET("/comment/list/", func(ctx context.Context, c *app.RequestContext) {
-			controller.CommentList(ctx, c)
-			println("/comment/list:get")
-		})
+		apiRouter.POST("/favorite/action/", handlers.FavoriteAction)
+		apiRouter.GET("/favorite/list/", handlers.FavoriteList)
+		apiRouter.POST("/comment/action/", handlers.CommentAction)
+		apiRouter.GET("/comment/list/", handlers.CommentList)
+		//apiRouter.POST("/favorite/action/", func(ctx context.Context, c *app.RequestContext) {
+		//	controller.FavoriteAction(ctx, c)
+		//	println("/favorite/action:post")
+		//})
+		//apiRouter.GET("/favorite/list/", func(ctx context.Context, c *app.RequestContext) {
+		//	controller.FavoriteList(ctx, c)
+		//	println("/favorite/list:get")
+		//})
+		//apiRouter.POST("/comment/action/", func(ctx context.Context, c *app.RequestContext) {
+		//	controller.CommentAction(ctx, c)
+		//	println("/comment/action:post")
+		//})
+		//apiRouter.GET("/comment/list/", func(ctx context.Context, c *app.RequestContext) {
+		//	controller.CommentList(ctx, c)
+		//	println("/comment/list:get")
+		//})
 
 		//社交接口
-		apiRouter.POST("/relation/action/", func(ctx context.Context, c *app.RequestContext) {
-			controller.RelationAction(ctx, c)
-			println("/relation/action:post")
-		})
-		apiRouter.GET("/relation/follow/list/", func(ctx context.Context, c *app.RequestContext) {
-			controller.FollowList(ctx, c)
-			println("/relation/follow/list:get")
-		})
-		apiRouter.GET("/relation/follower/list/", func(ctx context.Context, c *app.RequestContext) {
-			controller.FollowerList(ctx, c)
-			println("/relation/follower/list:get")
-		})
+		apiRouter.POST("/relation/action/", handlers.RelationAction)
+		apiRouter.GET("/relation/follow/list/", handlers.FollowList)
+		apiRouter.GET("/relation/follower/list/", handlers.FollowerList)
+		//apiRouter.POST("/relation/action/", func(ctx context.Context, c *app.RequestContext) {
+		//	controller.RelationAction(ctx, c)
+		//	println("/relation/action:post")
+		//})
+		//apiRouter.GET("/relation/follow/list/", func(ctx context.Context, c *app.RequestContext) {
+		//	controller.FollowList(ctx, c)
+		//	println("/relation/follow/list:get")
+		//})
+		//apiRouter.GET("/relation/follower/list/", func(ctx context.Context, c *app.RequestContext) {
+		//	controller.FollowerList(ctx, c)
+		//	println("/relation/follower/list:get")
+		//})
 		apiRouter.GET("/relation/friend/list/", func(ctx context.Context, c *app.RequestContext) {
 			controller.FriendList(ctx, c)
 			println("/relation/friend/list:get")

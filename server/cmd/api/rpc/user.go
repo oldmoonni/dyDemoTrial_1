@@ -51,7 +51,7 @@ func initUserRpc() {
 	//}
 	//userClient = c
 
-	c, err := userservice.NewClient("user", client.WithHostPorts("127.0.0.1:8801"))
+	c, err := userservice.NewClient("userservice", client.WithHostPorts("127.0.0.1:8801"))
 	if err != nil {
 		log.Fatal(err)
 	}

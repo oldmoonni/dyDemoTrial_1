@@ -20,7 +20,7 @@ func FavoriteAction(ctx context.Context, c *app.RequestContext) {
 	}
 	action_type, err := strconv.ParseInt(c.Query("action_type"), 10, 32)
 	if err != nil {
-		log.Fatal("wrong user_id")
+		log.Fatal("wrong action_type")
 	}
 
 	duserlock, flag := dao.UserLockInfoByToken(token)

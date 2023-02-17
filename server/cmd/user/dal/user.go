@@ -136,63 +136,6 @@ func DrecomInsert(token string)  {
 	db.Create(&DRecommend{Token: token, Type1: 10, Type2: 10, Type3: 10})
 }
 
-func DrecomFindByToken(token string) (drecommend DRecommend, flag bool) {
-	db := getDB()
-	var drecommends []DRecommend
-	db.Where(map[string]interface{}{"Token": token}).Find(&drecommends)
-
-	if len(drecommends) != 0 {
-		drecommend = drecommends[0]
-		flag = true
-	} else {
-		flag = false
-	}
-	return
-}
-
-func DrecomAdd(token string, n int) {
-	db := getDB()
-	var drecommend DRecommend
-	db.Where(&DRecommend{Token: token}).Find(&drecommend)
-	switch n {
-	case 1:
-		s1 := drecommend.Type1
-		db.Model(&drecommend).Update("type1", s1+1)
-	case 2:
-		s2 := drecommend.Type2
-		db.Model(&drecommend).Update("type2", s2+1)
-	case 3:
-		s3 := drecommend.Type3
-		db.Model(&drecommend).Update("type3", s3+1)
-	}
-}
-
-func DrecomSub(token string, n int) {
-	db := getDB()
-	var drecommend DRecommend
-	db.Where(&DRecommend{Token: token}).Find(&drecommend)
-	switch n {
-	case 1:
-		s1 := drecommend.Type1
-		if s1 == 0 {
-			return
-		}
-		db.Model(&drecommend).Update("Type1", s1-1)
-	case 2:
-		s2 := drecommend.Type2
-		if s2 == 0 {
-			return
-		}
-		db.Model(&drecommend).Update("Type2", s2-1)
-	case 3:
-		s3 := drecommend.Type3
-		if s3 == 0 {
-			return
-		}
-		db.Model(&drecommend).Update("Type3", s3-1)
-	}
-}
-
 func Isfollow(from_id int64, to_id int64) (flag bool) {
 	var dfollows []DFollow
 	db.Where(map[string]interface{}{"From_id": from_id, "To_id": to_id}).Find(&dfollows)

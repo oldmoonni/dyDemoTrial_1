@@ -28,6 +28,8 @@ const (
 	AuthorizationFailedErrCode = 10004
 	PasswordErrCode			   = 10005
 	UserNotExistErrCode	       = 10006
+	HaveDoneErrCode 		   = 10007
+	UserInfoWrongErrCode       = 10008
 )
 
 type ErrNo struct {
@@ -56,6 +58,8 @@ var (
 	AuthorizationFailedErr = NewErrNo(AuthorizationFailedErrCode, "Authorization failed")
 	PasswordErr 		   = NewErrNo(PasswordErrCode, "wrong password")
 	UserNotExistErr 	   = NewErrNo(UserNotExistErrCode, "User do not exist")
+	HaveDoneErr 	   	   = NewErrNo(HaveDoneErrCode, "you have done this action")
+	UserInfoWrongErr 	   = NewErrNo(UserInfoWrongErrCode, "wrong User information")
 )
 
 // ConvertErr convert error to Errno

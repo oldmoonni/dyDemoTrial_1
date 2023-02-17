@@ -57,12 +57,6 @@ func RelationAction(ctx context.Context, c *app.RequestContext) {
 	} else {
 		c.JSON(consts.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
 	}
-
-	if _, exist := usersLoginInfo[token]; exist {
-		c.JSON(consts.StatusOK, Response{StatusCode: 0})
-	} else {
-		c.JSON(consts.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
-	}
 }
 
 // FollowList all users have same follow list
