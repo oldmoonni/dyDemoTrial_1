@@ -75,6 +75,7 @@ func customizedRegister(r *server.Hertz) {
 		apiRouter.POST("/relation/action/", handlers.RelationAction)
 		apiRouter.GET("/relation/follow/list/", handlers.FollowList)
 		apiRouter.GET("/relation/follower/list/", handlers.FollowerList)
+		apiRouter.GET("/relation/friend/list/", handlers.FriendList)
 		//apiRouter.POST("/relation/action/", func(ctx context.Context, c *app.RequestContext) {
 		//	controller.RelationAction(ctx, c)
 		//	println("/relation/action:post")
@@ -87,10 +88,10 @@ func customizedRegister(r *server.Hertz) {
 		//	controller.FollowerList(ctx, c)
 		//	println("/relation/follower/list:get")
 		//})
-		apiRouter.GET("/relation/friend/list/", func(ctx context.Context, c *app.RequestContext) {
-			controller.FriendList(ctx, c)
-			println("/relation/friend/list:get")
-		})
+		//apiRouter.GET("/relation/friend/list/", func(ctx context.Context, c *app.RequestContext) {
+		//	controller.FriendList(ctx, c)
+		//	println("/relation/friend/list:get")
+		//})
 		apiRouter.GET("/message/chat/", func(ctx context.Context, c *app.RequestContext) {
 			controller.MessageChat(ctx, c)
 			println("/message/chat:get")

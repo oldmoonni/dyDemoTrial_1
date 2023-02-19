@@ -4,7 +4,6 @@ import (
 	"context"
 	dal2 "github.com/trial_1/dyDemoTrial_1/server/cmd/interact/dal"
 	"github.com/trial_1/dyDemoTrial_1/server/kitex_gen/interact"
-	"log"
 )
 
 type FavoriteListService struct {
@@ -46,15 +45,22 @@ func feedv2v(dvideos []dal2.DVideo, token string) (videos []*interact.Video) {
 
 func u2uPlusToken(duser dal2.DUser, token string) (user *interact.User) {
 	duserlock, flag := dal2.UserLockInfoByToken(token)
+	isFollow := dal2.Isfollow(duserlock.Id, duser.Id)
 	if flag == false {
-		log.Fatal("wrong user information")
+		isFollow = false
 	}
 	user = &interact.User{
 		Id: duser.Id,
 		Name: duser.Name,
 		FollowCount: duser.FollowCount,
 		FollowerCount: duser.FollowerCount,
-		IsFollow: dal2.Isfollow(duserlock.Id, duser.Id),
+		IsFollow: isFollow,
+		Avatar: duser.Avatar,
+		BackgroundImage: duser.BackgroundImage,
+		Signature: duser.Signature,
+		TotalFavorited: duser.TotalFavorited,
+		WorkCount: duser.WorkCount,
+		FavoriteCount: duser.FavoriteCount,
 	}
 	return
 }

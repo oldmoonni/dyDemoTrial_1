@@ -42,6 +42,12 @@ func u2uplustoken(duser dal.DUser, token string) (user *user1.User) {
 		FollowCount: duser.FollowCount,
 		FollowerCount: duser.FollowerCount,
 		IsFollow: dal.Isfollow(duserlock.Id, duser.Id),
+		Avatar: duser.Avatar,
+		BackgroundImage: duser.BackgroundImage,
+		Signature: duser.Signature,
+		TotalFavorited: duser.TotalFavorited,
+		WorkCount: duser.WorkCount,
+		FavoriteCount: duser.FavoriteCount,
 	}
 	return
 }

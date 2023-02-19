@@ -113,6 +113,10 @@ func GetVideosByUserId(user_id int64) (dvideos []DVideo) {
 func VideoInsert(id int64, author int64, play_url string, cover_url string, title string, time int64) {
 	db := getDB()
 	db.Create(&DVideo{Id: id, Author: author, PlayUrl: play_url, CoverUrl: cover_url, Title: title, Time: time})
+	var duser DUser
+	db.Where(map[string]interface{}{"Id": author}).Find(&duser)
+	workCount := duser.WorkCount
+	db.Model(&duser).Update("WorkCount", workCount+1)
 }
 
 func VideoFindById(video_id int64) (dvideo DVideo) {

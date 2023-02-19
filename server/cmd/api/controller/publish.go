@@ -50,13 +50,13 @@ func Publish(ctx context.Context, c *app.RequestContext) {
 	//保存到minio上
 	title := c.PostForm("title")
 	minio.UploadMinio(file, id, file.Filename, file.Size)
-	path := fmt.Sprintf("http://192.168.64.1:9000/videos/%s/%s", strconv.FormatInt(id, 10), file.Filename)
+	path := fmt.Sprintf("http://172.22.105.178:9000/videos/%s/%s", strconv.FormatInt(id, 10), file.Filename)
 	//封面上传到minio, 这个filename是包含.mp4后缀的
 	img_name := strings.TrimSuffix(file.Filename, path2.Ext(file.Filename)) + ".jpeg"
 	ffmpeg.GetFrame(path, img_name, id)
 
 	author := duserlock.Id
-	img_path := fmt.Sprintf("http://192.168.64.1:9000/videos/%s/%s", strconv.FormatInt(id, 10), img_name)
+	img_path := fmt.Sprintf("http://172.22.105.178:9000/videos/%s/%s", strconv.FormatInt(id, 10), img_name)
 	timeUnix := time.Now().Unix()
 	dao.VideoInsert(id, author, path, img_path, title, timeUnix)
 

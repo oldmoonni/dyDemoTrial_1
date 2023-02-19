@@ -27,6 +27,12 @@ func (s *RelationActionService) RelationAction(req *social.RelationActionRequest
 	fromId := duserlock.Id
 
 	if flag == true && flag2 == true {
+
+		if fromId == toUserId {
+			err = errno.IllegalOperationErr
+			return
+		}
+
 		//actionType==1 关注 actionType==2 取消关注
 		if actionType == 1 {
 			if dal2.Isfollow(fromId, toUserId) == true {

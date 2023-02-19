@@ -22,6 +22,9 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"RelationAction": kitex.NewMethodInfo(relationActionHandler, newSocialServiceRelationActionArgs, newSocialServiceRelationActionResult, false),
 		"FollowList":     kitex.NewMethodInfo(followListHandler, newSocialServiceFollowListArgs, newSocialServiceFollowListResult, false),
 		"FollowerList":   kitex.NewMethodInfo(followerListHandler, newSocialServiceFollowerListArgs, newSocialServiceFollowerListResult, false),
+		"FriendList":     kitex.NewMethodInfo(friendListHandler, newSocialServiceFriendListArgs, newSocialServiceFriendListResult, false),
+		"MessageChat":    kitex.NewMethodInfo(messageChatHandler, newSocialServiceMessageChatArgs, newSocialServiceMessageChatResult, false),
+		"MessageAction":  kitex.NewMethodInfo(messageActionHandler, newSocialServiceMessageActionArgs, newSocialServiceMessageActionResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "social",
@@ -91,6 +94,60 @@ func newSocialServiceFollowerListResult() interface{} {
 	return social.NewSocialServiceFollowerListResult()
 }
 
+func friendListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*social.SocialServiceFriendListArgs)
+	realResult := result.(*social.SocialServiceFriendListResult)
+	success, err := handler.(social.SocialService).FriendList(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newSocialServiceFriendListArgs() interface{} {
+	return social.NewSocialServiceFriendListArgs()
+}
+
+func newSocialServiceFriendListResult() interface{} {
+	return social.NewSocialServiceFriendListResult()
+}
+
+func messageChatHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*social.SocialServiceMessageChatArgs)
+	realResult := result.(*social.SocialServiceMessageChatResult)
+	success, err := handler.(social.SocialService).MessageChat(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newSocialServiceMessageChatArgs() interface{} {
+	return social.NewSocialServiceMessageChatArgs()
+}
+
+func newSocialServiceMessageChatResult() interface{} {
+	return social.NewSocialServiceMessageChatResult()
+}
+
+func messageActionHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*social.SocialServiceMessageActionArgs)
+	realResult := result.(*social.SocialServiceMessageActionResult)
+	success, err := handler.(social.SocialService).MessageAction(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newSocialServiceMessageActionArgs() interface{} {
+	return social.NewSocialServiceMessageActionArgs()
+}
+
+func newSocialServiceMessageActionResult() interface{} {
+	return social.NewSocialServiceMessageActionResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -126,6 +183,36 @@ func (p *kClient) FollowerList(ctx context.Context, req *social.FollowerListRequ
 	_args.Req = req
 	var _result social.SocialServiceFollowerListResult
 	if err = p.c.Call(ctx, "FollowerList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) FriendList(ctx context.Context, req *social.FriendListRequest) (r *social.FriendListResponse, err error) {
+	var _args social.SocialServiceFriendListArgs
+	_args.Req = req
+	var _result social.SocialServiceFriendListResult
+	if err = p.c.Call(ctx, "FriendList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) MessageChat(ctx context.Context, req *social.MessageChatRequest) (r *social.MessageChatResponse, err error) {
+	var _args social.SocialServiceMessageChatArgs
+	_args.Req = req
+	var _result social.SocialServiceMessageChatResult
+	if err = p.c.Call(ctx, "MessageChat", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) MessageAction(ctx context.Context, req *social.MessageActionRequest) (r *social.MessageActionResponse, err error) {
+	var _args social.SocialServiceMessageActionArgs
+	_args.Req = req
+	var _result social.SocialServiceMessageActionResult
+	if err = p.c.Call(ctx, "MessageAction", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

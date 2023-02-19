@@ -35,13 +35,6 @@ func VideoFeed(ctx context.Context, c *app.RequestContext) {
 		log.Fatal("wrong latest_time")
 	}
 
-	if len(token) == 0 {
-		c.JSON(consts.StatusOK, FeedResponse{
-			Response: Response{StatusCode: 1, StatusMsg: "wrong Param"},
-		})
-		return
-	}
-
 	resp := new(video.FeedResponse)
 	resp, err = rpc.VideoFeed(context.Background(), &video.FeedRequest{
 		LatestTime: latestTime,
@@ -72,6 +65,12 @@ func videovp2v(pvideos []*video.Video) (videos []Video) {
 				FollowCount: pvideos[i].Author.FollowCount,
 				FollowerCount: pvideos[i].Author.FollowerCount,
 				IsFollow: pvideos[i].Author.IsFollow,
+				Avatar: pvideos[i].Author.Avatar,
+				BackgroundImage: pvideos[i].Author.BackgroundImage,
+				Signature: pvideos[i].Author.Signature,
+				TotalFavorited: pvideos[i].Author.TotalFavorited,
+				WorkCount: pvideos[i].Author.WorkCount,
+				FavoriteCount: pvideos[i].Author.FavoriteCount,
 			},
 			PlayUrl: pvideos[i].PlayUrl,
 			CoverUrl: pvideos[i].CoverUrl,

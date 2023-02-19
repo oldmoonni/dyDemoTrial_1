@@ -8,6 +8,7 @@ import (
 	"github.com/trial_1/dyDemoTrial_1/server/pkg/middleware"
 	"log"
 	"net"
+	"time"
 )
 
 func main() {
@@ -27,6 +28,7 @@ func main() {
 		server.WithMiddleware(middleware.ServerMiddleware),
 		server.WithServiceAddr(addr),                                       // address
 		server.WithLimit(&limit.Option{MaxConnections: 1000, MaxQPS: 100}), // limit
+		server.WithReadWriteTimeout(time.Hour),
 		//server.WithMuxTransport(),                                          // Multiplex
 		//server.WithBoundHandler(bound.NewCpuLimitHandler()),                // BoundHandler
 		//server.WithRegistry(r),                                             // registry

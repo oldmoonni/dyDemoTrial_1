@@ -94,3 +94,15 @@ func FollowerList(ctx context.Context, req *social.FollowerListRequest) (resp *s
 	}
 	return
 }
+
+func FriendList(ctx context.Context, req *social.FriendListRequest) (resp *social.FriendListResponse, err error) {
+	resp, err = socialClient.FriendList(ctx, req)
+	if err != nil {
+		return
+	}
+	if resp.BaseResp.StatusCode != 0 {
+		err = errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMessage)
+		return
+	}
+	return
+}

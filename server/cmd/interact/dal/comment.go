@@ -1,4 +1,4 @@
-package dao
+package dal
 
 type DComment struct {
 	Comment_id  int64

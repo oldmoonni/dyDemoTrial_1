@@ -1,4 +1,4 @@
-package dao
+package dal
 
 import "log"
 
@@ -74,7 +74,28 @@ func GetFollowerList(user_id int64) (dusers []DUser) {
 	return
 }
 
+func GetFriendList(user_id int64) (friends []DUser) {
+	db := getDB()
+	dfollows := make([]DFollow, 0)
+	db.Where(&DFollow{To_id: user_id}).Find(&dfollows)
+	friends = make([]DUser, len(dfollows))
+	j := 0
+	for i := range dfollows {
+		id := dfollows[i].From_id
+		flag := Isfollow(user_id, id)
+		if flag == true {
+			friends[j], _ = UserIsExistById(id)
+			j++
+		}
+	}
+	return
+}
+
 func Isfollow(from_id int64, to_id int64) (flag bool) {
+	if from_id == to_id {
+		flag = true
+		return
+	}
 	var dfollows []DFollow
 	db.Where(map[string]interface{}{"From_id": from_id, "To_id": to_id}).Find(&dfollows)
 	if len(dfollows) == 0 {

@@ -57,6 +57,12 @@ func UserInfo(ctx context.Context, c *app.RequestContext) {
 			FollowCount: resp.User.FollowCount,
 			FollowerCount: resp.User.FollowerCount,
 			IsFollow: resp.User.IsFollow,
+			Avatar: resp.User.Avatar,
+			BackgroundImage: resp.User.BackgroundImage,
+			Signature: resp.User.Signature,
+			TotalFavorited: resp.User.TotalFavorited,
+			WorkCount: resp.User.WorkCount,
+			FavoriteCount: resp.User.FavoriteCount,
 		},
 	})
 }

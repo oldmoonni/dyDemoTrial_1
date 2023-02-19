@@ -46,6 +46,7 @@ func (s *FavoriteActionService) FavoriteAction(req *interact.FavoriteActionReque
 		timeUnix := time.Now().Unix()
 		dal2.VideoAddFav(id, userId, videoId, timeUnix)
 		video := dal2.GetVideosByVideoId(videoId)
+		dal2.UserAddFav(video, userId)
 		switch video.Title {
 		case "dy1": dal2.DrecomAdd(token, 1)
 		case "dy2": dal2.DrecomAdd(token, 2)
@@ -61,6 +62,7 @@ func (s *FavoriteActionService) FavoriteAction(req *interact.FavoriteActionReque
 		userId := duserlock.Id
 		dal2.VideoSubFav(userId, videoId)
 		video := dal2.GetVideosByVideoId(videoId)
+		dal2.UserSubFav(video, userId)
 		switch video.Title {
 		case "dy1": dao.DrecomSub(token, 1)
 		case "dy2": dao.DrecomSub(token, 2)

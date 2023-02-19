@@ -47,7 +47,7 @@ func feedv2v(dvideos []dao.DVideo, token string) (videos []Video) {
 	for i := range dvideos {
 		videos[i].Id = dvideos[i].Id
 		duser, _ := dao.UserIsExistById(dvideos[i].Author)
-		user := u2u(duser)
+		user := u2uplustoken(duser, token)
 		videos[i].Author = user
 		videos[i].PlayUrl = dvideos[i].PlayUrl
 		videos[i].CoverUrl = dvideos[i].CoverUrl

@@ -8,10 +8,16 @@ import (
 )
 
 type DUser struct {
-	Id            int64  `json:"id,omitempty"`
-	Name          string `json:"name,omitempty"`
-	FollowCount   int64  `json:"follow_count,omitempty"`
-	FollowerCount int64  `json:"follower_count,omitempty"`
+	Id            			int64
+	Name          			string
+	FollowCount   			int64
+	FollowerCount 			int64
+	Avatar					string
+	BackgroundImage			string
+	Signature				string
+	TotalFavorited			int64
+	WorkCount				int64
+	FavoriteCount			int64
 }
 
 type DUserLock struct {
@@ -95,7 +101,7 @@ func UserIsExistById(id int64) (user DUser, flag bool) {
 
 func UserInsert(id int64, name string) {
 	db := getDB()
-	db.Create(&DUser{Id: id, Name: name, FollowCount: 0, FollowerCount: 0})
+	db.Create(&DUser{Id: id, Name: name, FollowCount: 0, FollowerCount: 0, Avatar: "http://172.22.105.178:9000/videos/user/avatar.jpg", BackgroundImage: "http://172.22.105.178:9000/videos/user/background.jpg", Signature: "测试用户"})
 }
 
 func UserLockInsert(id int64, name string, password string) {
@@ -137,6 +143,10 @@ func DrecomInsert(token string)  {
 }
 
 func Isfollow(from_id int64, to_id int64) (flag bool) {
+	if from_id == to_id {
+		flag = true
+		return
+	}
 	var dfollows []DFollow
 	db.Where(map[string]interface{}{"From_id": from_id, "To_id": to_id}).Find(&dfollows)
 	if len(dfollows) == 0 {

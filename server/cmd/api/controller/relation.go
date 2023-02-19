@@ -95,14 +95,13 @@ func FollowerList(ctx context.Context, c *app.RequestContext) {
 	})
 }
 
-// FriendList all users have same friend list
 func FriendList(ctx context.Context, c *app.RequestContext) {
 	user_id, err := strconv.ParseInt(c.Query("user_id"), 10, 64)
 	if err != nil {
 		log.Fatal("wrong user_id")
 	}
 	token := c.Query("token")
-	dusers := dao.GetFollowerList(user_id)
+	dusers := dao.GetFriendList(user_id)
 	users := u2uplustokenList(dusers, token)
 
 	c.JSON(consts.StatusOK, UserListResponse{

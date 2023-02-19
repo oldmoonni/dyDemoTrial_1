@@ -10,7 +10,7 @@ import (
 )
 
 func UploadMinio(fileheader *multipart.FileHeader, id int64, name string, size int64) {
-	endpoint := "192.168.64.1:9000"
+	endpoint := "172.22.105.178:9000"
 	accessKeyID := "minioadmin"
 	secretAccessKey := "minioadmin"
 	useSSL := false //注意没有安装证书的填false
@@ -60,7 +60,7 @@ func UploadMinio(fileheader *multipart.FileHeader, id int64, name string, size i
 }
 
 func UploadMinioJpg(id int64, name string, filePath string) {
-	endpoint := "192.168.64.1:9000"
+	endpoint := "172.22.105.178:9000"
 	accessKeyID := "minioadmin"
 	secretAccessKey := "minioadmin"
 	useSSL := false //注意没有安装证书的填false

@@ -17,11 +17,6 @@ func (s *VideoServiceImpl) VideoFeed(ctx context.Context, req *video.FeedRequest
 
 	resp = new(video.FeedResponse)
 
-	if len(req.Token) == 0 {
-		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
-		return resp, err
-	}
-
 	resp, err = service.NewVideoFeedService(ctx).VideoFeed(req)
 	if err != nil {
 		resp.BaseResp = pack.BuildBaseResp(err)

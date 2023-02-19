@@ -154,6 +154,7 @@ func u2u(duser dao.DUser) (user User) {
 	return
 }
 
+//修改后
 func u2uplustoken(duser dao.DUser, token string) (user User) {
 	user.Id = duser.Id
 	user.Name = duser.Name
@@ -163,7 +164,19 @@ func u2uplustoken(duser dao.DUser, token string) (user User) {
 	if flag == false {
 		log.Fatal("wrong user information")
 	}
-	user.IsFollow = dao.Isfollow(duserlock.Id, duser.Id)
+	user = User{
+		Id: duser.Id,
+		Name: duser.Name,
+		FollowCount: duser.FollowCount,
+		FollowerCount: duser.FollowerCount,
+		IsFollow: dao.Isfollow(duserlock.Id, duser.Id),
+		Avatar: duser.Avatar,
+		BackgroundImage: duser.BackgroundImage,
+		Signature: duser.Signature,
+		TotalFavorited: duser.TotalFavorited,
+		WorkCount: duser.WorkCount,
+		FavoriteCount: duser.FavoriteCount,
+	}
 	return
 }
 

@@ -58,6 +58,12 @@ func socialup2uList(pusers []*social.User) (users []User) {
 			FollowCount: pusers[i].FollowCount,
 			FollowerCount: pusers[i].FollowerCount,
 			IsFollow: pusers[i].IsFollow,
+			Avatar: pusers[i].Avatar,
+			BackgroundImage: pusers[i].BackgroundImage,
+			Signature: pusers[i].Signature,
+			TotalFavorited: pusers[i].TotalFavorited,
+			WorkCount: pusers[i].WorkCount,
+			FavoriteCount: pusers[i].FavoriteCount,
 		}
 	}
 	return

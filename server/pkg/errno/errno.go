@@ -30,6 +30,7 @@ const (
 	UserNotExistErrCode	       = 10006
 	HaveDoneErrCode 		   = 10007
 	UserInfoWrongErrCode       = 10008
+	IllegalOperationErrCode    = 10009
 )
 
 type ErrNo struct {
@@ -59,7 +60,8 @@ var (
 	PasswordErr 		   = NewErrNo(PasswordErrCode, "wrong password")
 	UserNotExistErr 	   = NewErrNo(UserNotExistErrCode, "User do not exist")
 	HaveDoneErr 	   	   = NewErrNo(HaveDoneErrCode, "you have done this action")
-	UserInfoWrongErr 	   = NewErrNo(UserInfoWrongErrCode, "wrong User information")
+	UserInfoWrongErr 	   = NewErrNo(UserInfoWrongErrCode, "wrong user information")
+	IllegalOperationErr    = NewErrNo(IllegalOperationErrCode, "illegal operation")
 )
 
 // ConvertErr convert error to Errno

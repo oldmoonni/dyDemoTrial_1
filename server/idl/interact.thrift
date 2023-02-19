@@ -12,6 +12,12 @@ struct User {
     3:i64 follow_count
     4:i64 follower_count
     5:bool is_follow
+	6:string Avatar
+	7:string BackgroundImage
+	8:string Signature
+	9:i64 TotalFavorited
+	10:i64 WorkCount
+	11:i64 FavoriteCount
 }
 
 struct Video {

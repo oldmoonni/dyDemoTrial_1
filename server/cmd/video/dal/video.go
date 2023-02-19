@@ -1,4 +1,4 @@
-package dao
+package dal
 
 import (
 	"fmt"
@@ -41,10 +41,16 @@ type DUserLock struct {
 }
 
 type DUser struct {
-	Id            int64  `json:"id,omitempty"`
-	Name          string `json:"name,omitempty"`
-	FollowCount   int64  `json:"follow_count,omitempty"`
-	FollowerCount int64  `json:"follower_count,omitempty"`
+	Id            			int64
+	Name          			string
+	FollowCount   			int64
+	FollowerCount 			int64
+	Avatar					string
+	BackgroundImage			string
+	Signature				string
+	TotalFavorited			int64
+	WorkCount				int64
+	FavoriteCount			int64
 }
 
 type DFollow struct {
@@ -90,6 +96,12 @@ func getDB() *gorm.DB {
 		if err != nil {
 			log.Fatal("failed to connect database: %w", err)
 		}
+
+		//sqlDB, err := db.DB()
+		//
+		//sqlDB.SetMaxIdleConns(10)
+		//sqlDB.SetMaxOpenConns(100)
+		//sqlDB.SetConnMaxLifetime(59 * time.Second)
 	})
 	return db
 }
@@ -104,7 +116,7 @@ func GetFeedByToken(latest_time int64, token string) (dvideos []DVideo) {
 	db := getDB()
 	drecom, flag := DrecomFindByToken(token)
 	if flag == false {
-		log.Fatal("can not find user drecommend")
+		println("can not find user drecommend")
 	}
 	sum := drecom.Type1 + drecom.Type2 +drecom.Type3
 	s1 := int(float32(drecom.Type1)/float32(sum)*30)
@@ -189,6 +201,10 @@ func UserLockInfoByToken(token string) (duserlock DUserLock, flag bool) {
 }
 
 func Isfollow(from_id int64, to_id int64) (flag bool) {
+	if from_id == to_id {
+		flag = true
+		return
+	}
 	var dfollows []DFollow
 	db.Where(map[string]interface{}{"From_id": from_id, "To_id": to_id}).Find(&dfollows)
 	if len(dfollows) == 0 {
