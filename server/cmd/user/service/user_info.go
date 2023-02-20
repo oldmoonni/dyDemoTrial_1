@@ -5,7 +5,6 @@ import (
 	"github.com/trial_1/dyDemoTrial_1/server/cmd/user/dal"
 	user1 "github.com/trial_1/dyDemoTrial_1/server/kitex_gen/user"
 	"github.com/trial_1/dyDemoTrial_1/server/pkg/errno"
-	"log"
 )
 
 type UserInfoService struct {
@@ -24,17 +23,18 @@ func (s *UserInfoService) UserInfo(req *user1.UserInfoRequest) (user *user1.User
 	duser, flag2 := dal.UserIsExistById(userId)
 
 	if flag == true && flag2 == true && duserlock.Id == duser.Id {
-		user = u2uplustoken(duser, token)
+		user, err = u2uplustoken(duser, token)
 	} else {
 		err = errno.UserNotExistErr
 	}
 	return
 }
 
-func u2uplustoken(duser dal.DUser, token string) (user *user1.User) {
+func u2uplustoken(duser dal.DUser, token string) (user *user1.User, err error) {
 	duserlock, flag := dal.UserLockInfoByToken(token)
 	if flag == false {
-		log.Fatal("wrong user information")
+		err = errno.UserInfoWrongErr
+		return
 	}
 	user = &user1.User{
 		Id: duser.Id,

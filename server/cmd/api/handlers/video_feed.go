@@ -77,6 +77,7 @@ func videovp2v(pvideos []*video.Video) (videos []Video) {
 			FavoriteCount: pvideos[i].FavoriteCount,
 			CommentCount: pvideos[i].CommentCount,
 			IsFavorite: pvideos[i].IsFavorite,
+			Title: pvideos[i].Title,
 		}
 	}
 	return

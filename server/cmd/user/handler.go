@@ -40,7 +40,7 @@ func (s *UserServiceImpl) UserLogin(ctx context.Context, req *user.UserLoginRequ
 
 	if len(req.Name) == 0 || len(req.Password) == 0 {
 		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
-		return resp, errno.PasswordErr
+		return resp, err
 	}
 
 	resp, err = service.NewUserLoginService(ctx).UserLogin(req)

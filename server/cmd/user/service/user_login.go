@@ -5,6 +5,7 @@ import (
 	"github.com/trial_1/dyDemoTrial_1/server/cmd/user/dal"
 	"github.com/trial_1/dyDemoTrial_1/server/kitex_gen/user"
 	"github.com/trial_1/dyDemoTrial_1/server/pkg/errno"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserLoginService struct {
@@ -19,16 +20,15 @@ func (s *UserLoginService) UserLogin(req *user.UserLoginRequest) (resp *user.Use
 	username := req.Name
 	password := req.Password
 
-	token := username + password
-
 	duser, flag := dal.UserIsExistByName(username)
 	duserlock, flag2 := dal.UserLockInfoById(duser.Id)
+	println(flag,"  ",flag2)
 
 	if flag == true && flag2 == true {
-		if duserlock.Password == password {
+		if ComparePwd(duserlock.Password, password) {
 			resp = &user.UserLoginResponse{
 				UserId: duser.Id,
-				Token: token,
+				Token: duserlock.Token,
 			}
 		} else {
 			err = errno.PasswordErr
@@ -37,4 +37,16 @@ func (s *UserLoginService) UserLogin(req *user.UserLoginRequest) (resp *user.Use
 		err = errno.UserNotExistErr
 	}
 	return
+}
+
+// 比对密码
+func ComparePwd(pwd1 string, pwd2 string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(pwd1), []byte(pwd2))
+	// pwd1：数据库中的密码
+	// pwd2：用户输入的密码
+	if err != nil {
+		return false
+	} else {
+		return true
+	}
 }

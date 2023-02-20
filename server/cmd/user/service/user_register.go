@@ -6,6 +6,7 @@ import (
 	"github.com/trial_1/dyDemoTrial_1/server/cmd/user/dal"
 	"github.com/trial_1/dyDemoTrial_1/server/kitex_gen/user"
 	"github.com/trial_1/dyDemoTrial_1/server/pkg/errno"
+	"golang.org/x/crypto/bcrypt"
 	"log"
 )
 
@@ -21,8 +22,6 @@ func (s *UserRegisterService) UserRegister(req *user.UserRegisterRequest) (resp 
 	username := req.Name
 	password := req.Password
 
-	token := username + password
-
 	//生成的id
 	node, err := snowflake.NewNode(1)
 	if err != nil {
@@ -36,13 +35,14 @@ func (s *UserRegisterService) UserRegister(req *user.UserRegisterRequest) (resp 
 		err = errno.UserAlreadyExistErr
 	} else {
 		//将新用户加入数据库
+		sPwd, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 		dal.UserInsert(id, username)
-		dal.UserLockInsert(id, username, password)
-		dal.DrecomInsert(token)
+		dal.UserLockInsert(id, username, string(sPwd))
+		dal.DrecomInsert(username + string(sPwd))
 
 		resp = &user.UserRegisterResponse{
 			UserId: id,
-			Token: token,
+			Token: username + string(sPwd),
 		}
 	}
 	return

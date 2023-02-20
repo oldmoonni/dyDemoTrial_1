@@ -51,6 +51,7 @@ func feedv2v(dvideos []dal2.DVideo, token string) (videos []*video.Video) {
 			FavoriteCount: dvideos[i].FavoriteCount,
 			CommentCount: dvideos[i].CommentCount,
 			IsFavorite: dal2.VideoIsFavByToken(token, dvideos[i].Id),
+			Title: dvideos[i].Title,
 		}
 	}
 	return
