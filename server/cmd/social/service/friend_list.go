@@ -47,7 +47,7 @@ func u2fuplustokenList(dusers []dal2.DUser, token string) (users []*social.Frien
 			TotalFavorited: dusers[i].TotalFavorited,
 			WorkCount: dusers[i].WorkCount,
 			FavoriteCount: dusers[i].FavoriteCount,
-			Message: "last message",
+			Message: dal2.MessageFindLatest(duserlock.Id, dusers[i].Id).Content,
 			MsgType: 1,
 		}
 	}

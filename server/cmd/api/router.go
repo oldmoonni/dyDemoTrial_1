@@ -92,14 +92,16 @@ func customizedRegister(r *server.Hertz) {
 		//	controller.FriendList(ctx, c)
 		//	println("/relation/friend/list:get")
 		//})
-		apiRouter.GET("/message/chat/", func(ctx context.Context, c *app.RequestContext) {
-			controller.MessageChat(ctx, c)
-			println("/message/chat:get")
-		})
-		apiRouter.POST("/message/action/", func(ctx context.Context, c *app.RequestContext) {
-			controller.MessageAction(ctx, c)
-			println("/message/action:post")
-		})
+		apiRouter.POST("/message/action/", handlers.MessageAction)
+		apiRouter.GET("/message/chat/", handlers.MessageChat)
+		//apiRouter.GET("/message/chat/", func(ctx context.Context, c *app.RequestContext) {
+		//	controller.MessageChat(ctx, c)
+		//	println("/message/chat:get")
+		//})
+		//apiRouter.POST("/message/action/", func(ctx context.Context, c *app.RequestContext) {
+		//	controller.MessageAction(ctx, c)
+		//	println("/message/action:post")
+		//})
 
 	}
 

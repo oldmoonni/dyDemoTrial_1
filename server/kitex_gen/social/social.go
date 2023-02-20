@@ -4751,6 +4751,7 @@ type MessageActionRequest struct {
 	ToUserId   int64  `thrift:"toUserId,2" frugal:"2,default,i64" json:"toUserId"`
 	ActionType int32  `thrift:"actionType,3" frugal:"3,default,i32" json:"actionType"`
 	Content    string `thrift:"content,4" frugal:"4,default,string" json:"content"`
+	CreateTime int64  `thrift:"createTime,5" frugal:"5,default,i64" json:"createTime"`
 }
 
 func NewMessageActionRequest() *MessageActionRequest {
@@ -4776,6 +4777,10 @@ func (p *MessageActionRequest) GetActionType() (v int32) {
 func (p *MessageActionRequest) GetContent() (v string) {
 	return p.Content
 }
+
+func (p *MessageActionRequest) GetCreateTime() (v int64) {
+	return p.CreateTime
+}
 func (p *MessageActionRequest) SetToken(val string) {
 	p.Token = val
 }
@@ -4788,12 +4793,16 @@ func (p *MessageActionRequest) SetActionType(val int32) {
 func (p *MessageActionRequest) SetContent(val string) {
 	p.Content = val
 }
+func (p *MessageActionRequest) SetCreateTime(val int64) {
+	p.CreateTime = val
+}
 
 var fieldIDToName_MessageActionRequest = map[int16]string{
 	1: "token",
 	2: "toUserId",
 	3: "actionType",
 	4: "content",
+	5: "createTime",
 }
 
 func (p *MessageActionRequest) Read(iprot thrift.TProtocol) (err error) {
@@ -4848,6 +4857,16 @@ func (p *MessageActionRequest) Read(iprot thrift.TProtocol) (err error) {
 		case 4:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 5:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField5(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else {
@@ -4921,6 +4940,15 @@ func (p *MessageActionRequest) ReadField4(iprot thrift.TProtocol) error {
 	return nil
 }
 
+func (p *MessageActionRequest) ReadField5(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.CreateTime = v
+	}
+	return nil
+}
+
 func (p *MessageActionRequest) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("MessageActionRequest"); err != nil {
@@ -4941,6 +4969,10 @@ func (p *MessageActionRequest) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField4(oprot); err != nil {
 			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
 			goto WriteFieldError
 		}
 
@@ -5030,6 +5062,23 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 
+func (p *MessageActionRequest) writeField5(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("createTime", thrift.I64, 5); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.CreateTime); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+
 func (p *MessageActionRequest) String() string {
 	if p == nil {
 		return "<nil>"
@@ -5053,6 +5102,9 @@ func (p *MessageActionRequest) DeepEqual(ano *MessageActionRequest) bool {
 		return false
 	}
 	if !p.Field4DeepEqual(ano.Content) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.CreateTime) {
 		return false
 	}
 	return true
@@ -5082,6 +5134,13 @@ func (p *MessageActionRequest) Field3DeepEqual(src int32) bool {
 func (p *MessageActionRequest) Field4DeepEqual(src string) bool {
 
 	if strings.Compare(p.Content, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *MessageActionRequest) Field5DeepEqual(src int64) bool {
+
+	if p.CreateTime != src {
 		return false
 	}
 	return true

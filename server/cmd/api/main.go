@@ -10,7 +10,7 @@ import (
 func main() {
 	rpc.InitRPC()
 	h := server.Default(server.WithMaxRequestBodySize(20 << 20),
-		server.WithHostPorts("0.0.0.0:8888"))
+		server.WithHostPorts(":8080"))
 
 	register(h)
 	h.Spin()

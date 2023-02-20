@@ -100,6 +100,7 @@ struct MessageActionRequest {
     2: i64 toUserId
     3: i32 actionType
     4: string content
+    5: i64 createTime
 }
 
 struct MessageActionResponse {

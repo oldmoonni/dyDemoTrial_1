@@ -111,7 +111,7 @@ func (s *SocialServiceImpl) MessageAction(ctx context.Context, req *social.Messa
 	// TODO: Your code here...
 	resp = new(social.MessageActionResponse)
 
-	if len(req.Token) == 0 {
+	if len(req.Token) == 0 || len(req.Content) == 0 {
 		resp.BaseResp = pack.BuildBaseResp(errno.ParamErr)
 		return resp, err
 	}

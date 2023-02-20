@@ -33,7 +33,7 @@ func MessageAction(ctx context.Context, c *app.RequestContext) {
 		curMessage := Message{
 			Id:         messageIdSequence,
 			Content:    content,
-			CreateTime: time.Now().Format(time.Kitchen),
+			CreateTime: time.Now().Unix(),
 		}
 
 		if messages, exist := tempChat[chatKey]; exist {

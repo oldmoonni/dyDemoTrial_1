@@ -106,3 +106,27 @@ func FriendList(ctx context.Context, req *social.FriendListRequest) (resp *socia
 	}
 	return
 }
+
+func MessageAction(ctx context.Context, req *social.MessageActionRequest) (resp *social.MessageActionResponse, err error) {
+	resp, err = socialClient.MessageAction(ctx, req)
+	if err != nil {
+		return
+	}
+	if resp.BaseResp.StatusCode != 0 {
+		err = errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMessage)
+		return
+	}
+	return
+}
+
+func MessageChat(ctx context.Context, req *social.MessageChatRequest) (resp *social.MessageChatResponse, err error) {
+	resp, err = socialClient.MessageChat(ctx, req)
+	if err != nil {
+		return
+	}
+	if resp.BaseResp.StatusCode != 0 {
+		err = errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMessage)
+		return
+	}
+	return
+}

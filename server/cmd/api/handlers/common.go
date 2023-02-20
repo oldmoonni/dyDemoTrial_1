@@ -53,6 +53,11 @@ type FriendUserListResponse struct {
 	UserList []FriendUser `json:"user_list"`
 }
 
+type MessageChatResponse struct {
+	Response
+	MessageList []Message `json:"message_list,omitempty"`
+}
+
 type Video struct {
 	Id            int64  `json:"id,omitempty"`
 	Author        User   `json:"author"`
@@ -98,4 +103,12 @@ type Comment struct {
 	User       User   `json:"user"`
 	Content    string `json:"content,omitempty"`
 	CreateDate string `json:"create_date,omitempty"`
+}
+
+type Message struct {
+	Id         int64  `json:"id,omitempty"`
+	ToUserId   int64  `json:"to_user_id,omitempty"`
+	FromUserId   int64  `json:"from_user_id,omitempty"`
+	Content    string `json:"content,omitempty"`
+	CreateTime	 int64 `json:"create_time,omitempty"`
 }

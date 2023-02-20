@@ -5,7 +5,7 @@ type DMessage struct {
 	To_user_id   int64
 	From_user_id int64
 	Content      string
-	Create_time  string
+	Create_time  int64
 }
 
 func (m DMessage) TableName() string {
