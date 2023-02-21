@@ -7,6 +7,7 @@ import (
 	"github.com/trial_1/dyDemoTrial_1/server/kitex_gen/social"
 	"github.com/trial_1/dyDemoTrial_1/server/pkg/errno"
 	"log"
+	"sync"
 )
 
 type RelationActionService struct {
@@ -17,13 +18,27 @@ func NewRelationActionService(ctx context.Context) *RelationActionService {
 	return &RelationActionService{ctx: ctx}
 }
 
+var WaitGroup sync.WaitGroup
 func (s *RelationActionService) RelationAction(req *social.RelationActionRequest) (err error) {
 	token := req.Token
 	toUserId := req.ToUserId
 	actionType := req.ActionType
 
-	duserlock, flag := dal2.UserLockInfoByToken(token)
-	_, flag2 := dal2.UserIsExistById(toUserId)
+	var duserlock dal2.DUserLock
+	var flag, flag2 bool
+	WaitGroup.Add(2)
+	go func() {
+		duserlock, flag = dal2.UserLockInfoByToken(token)
+		println("第一个协程完成")
+		WaitGroup.Done()
+	}()
+	go func() {
+		_, flag2 = dal2.UserIsExistById(toUserId)
+		println("第二个协程完成")
+		WaitGroup.Done()
+	}()
+	WaitGroup.Wait()
+
 	fromId := duserlock.Id
 
 	if flag == true && flag2 == true {

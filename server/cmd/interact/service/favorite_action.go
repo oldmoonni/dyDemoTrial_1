@@ -8,6 +8,7 @@ import (
 	"github.com/trial_1/dyDemoTrial_1/server/kitex_gen/interact"
 	"github.com/trial_1/dyDemoTrial_1/server/pkg/errno"
 	"log"
+	"sync"
 	"time"
 )
 
@@ -19,6 +20,7 @@ func NewFavoriteActionService(ctx context.Context) *FavoriteActionService {
 	return &FavoriteActionService{ctx: ctx}
 }
 
+var WaitGroup sync.WaitGroup
 func (s *FavoriteActionService) FavoriteAction(req *interact.FavoriteActionRequest) (err error) {
 	token := req.Token
 	videoId := req.VideoId
@@ -44,9 +46,22 @@ func (s *FavoriteActionService) FavoriteAction(req *interact.FavoriteActionReque
 		id := int64(node.Generate())
 		userId := duserlock.Id
 		timeUnix := time.Now().Unix()
-		dal2.VideoAddFav(id, userId, videoId, timeUnix)
-		video := dal2.GetVideosByVideoId(videoId)
-		dal2.UserAddFav(video, userId)
+
+		var video dal2.DVideo
+		WaitGroup.Add(2)
+		go func() {
+			dal2.VideoAddFav(id, userId, videoId, timeUnix)
+			println("第一个协程完成")
+			WaitGroup.Done()
+		}()
+		go func() {
+			video = dal2.GetVideosByVideoId(videoId)
+			dal2.UserAddFav(video, userId)
+			println("第二个协程完成")
+			WaitGroup.Done()
+		}()
+		WaitGroup.Wait()
+
 		switch video.Title {
 		case "dy1": dal2.DrecomAdd(token, 1)
 		case "dy2": dal2.DrecomAdd(token, 2)
@@ -60,9 +75,22 @@ func (s *FavoriteActionService) FavoriteAction(req *interact.FavoriteActionReque
 			return
 		}
 		userId := duserlock.Id
-		dal2.VideoSubFav(userId, videoId)
-		video := dal2.GetVideosByVideoId(videoId)
-		dal2.UserSubFav(video, userId)
+		var video dal2.DVideo
+
+		WaitGroup.Add(2)
+		go func() {
+			dal2.VideoSubFav(userId, videoId)
+			println("第一个协程完成")
+			WaitGroup.Done()
+		}()
+		go func() {
+			video = dal2.GetVideosByVideoId(videoId)
+			dal2.UserSubFav(video, userId)
+			println("第二个协程完成")
+			WaitGroup.Done()
+		}()
+		WaitGroup.Wait()
+
 		switch video.Title {
 		case "dy1": dao.DrecomSub(token, 1)
 		case "dy2": dao.DrecomSub(token, 2)

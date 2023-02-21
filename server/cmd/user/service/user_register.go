@@ -36,9 +36,26 @@ func (s *UserRegisterService) UserRegister(req *user.UserRegisterRequest) (resp 
 	} else {
 		//将新用户加入数据库
 		sPwd, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-		dal.UserInsert(id, username)
-		dal.UserLockInsert(id, username, string(sPwd))
-		dal.DrecomInsert(username + string(sPwd))
+		WaitGroup.Add(3)
+		go func() {
+			dal.UserInsert(id, username)
+			println("第一个协程完成")
+			WaitGroup.Done()
+		}()
+		go func() {
+			dal.UserLockInsert(id, username, string(sPwd))
+			println("第二个协程完成")
+			WaitGroup.Done()
+		}()
+		go func() {
+			dal.DrecomInsert(username + string(sPwd))
+			println("第三个协程完成")
+			WaitGroup.Done()
+		}()
+		WaitGroup.Wait()
+		//dal.UserInsert(id, username)
+		//dal.UserLockInsert(id, username, string(sPwd))
+		//dal.DrecomInsert(username + string(sPwd))
 
 		resp = &user.UserRegisterResponse{
 			UserId: id,

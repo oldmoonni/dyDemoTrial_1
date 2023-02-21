@@ -6,6 +6,7 @@ server/cmd/interact下执行 sh output/bootstrap.sh
 server/cmd/social下执行 sh output/bootstrap.sh  
 server/cmd/user下执行 sh output/bootstrap.sh  
 server/cmd/video下执行 sh output/bootstrap.sh  
+启动minio server  
 # 调用关系
 ![图片alt](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/341beef01d0146a48962bb826f49dbc1~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp?"调用关系")
 # 服务关系

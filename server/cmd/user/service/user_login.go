@@ -22,7 +22,6 @@ func (s *UserLoginService) UserLogin(req *user.UserLoginRequest) (resp *user.Use
 
 	duser, flag := dal.UserIsExistByName(username)
 	duserlock, flag2 := dal.UserLockInfoById(duser.Id)
-	println(flag,"  ",flag2)
 
 	if flag == true && flag2 == true {
 		if ComparePwd(duserlock.Password, password) {
