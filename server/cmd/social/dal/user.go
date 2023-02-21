@@ -65,3 +65,4 @@ func UserLockInfoByToken(token string) (duserlock DUserLock, flag bool) {
 	}
 	return
 }
+

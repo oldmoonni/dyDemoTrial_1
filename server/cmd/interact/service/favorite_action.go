@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"github.com/bwmarrin/snowflake"
-	"github.com/trial_1/dyDemoTrial_1/server/cmd/api/dao"
 	dal2 "github.com/trial_1/dyDemoTrial_1/server/cmd/interact/dal"
 	"github.com/trial_1/dyDemoTrial_1/server/kitex_gen/interact"
 	"github.com/trial_1/dyDemoTrial_1/server/pkg/errno"
@@ -92,9 +91,9 @@ func (s *FavoriteActionService) FavoriteAction(req *interact.FavoriteActionReque
 		WaitGroup.Wait()
 
 		switch video.Title {
-		case "dy1": dao.DrecomSub(token, 1)
-		case "dy2": dao.DrecomSub(token, 2)
-		case "dy3": dao.DrecomSub(token, 3)
+		case "dy1": dal2.DrecomSub(token, 1)
+		case "dy2": dal2.DrecomSub(token, 2)
+		case "dy3": dal2.DrecomSub(token, 3)
 		}
 	}
 	return
